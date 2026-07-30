@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import './config/database';
+import { Activity, LeaderboardEntry, Team, User, Workout } from './models/octofit';
 
 dotenv.config();
 
@@ -18,6 +19,62 @@ app.use(express.json());
 
 app.get('/', (_req, res) => {
   res.json({ message: 'OctoFit Tracker API', baseUrl });
+});
+
+// Modified by AI on 07/30/2026. Edit #1.
+app.get('/api/users/', async (_req, res, next) => {
+  try {
+    const users = await User.find().lean();
+    res.json(users);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Modified by AI on 07/30/2026. Edit #1.
+app.get('/api/teams/', async (_req, res, next) => {
+  try {
+    const teams = await Team.find().lean();
+    res.json(teams);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Modified by AI on 07/30/2026. Edit #1.
+app.get('/api/activities/', async (_req, res, next) => {
+  try {
+    const activities = await Activity.find().lean();
+    res.json(activities);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Modified by AI on 07/30/2026. Edit #1.
+app.get('/api/leaderboard/', async (_req, res, next) => {
+  try {
+    const leaderboard = await LeaderboardEntry.find().sort({ points: -1 }).lean();
+    res.json(leaderboard);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Modified by AI on 07/30/2026. Edit #1.
+app.get('/api/workouts/', async (_req, res, next) => {
+  try {
+    const workouts = await Workout.find().lean();
+    res.json(workouts);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Modified by AI on 07/30/2026. Edit #1.
+app.use((error: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  console.error(error);
+  res.status(500).json({ message: 'Internal server error' });
 });
 
 app.listen(PORT, () => {
