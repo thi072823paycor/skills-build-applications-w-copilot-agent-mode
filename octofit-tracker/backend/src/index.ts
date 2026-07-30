@@ -7,14 +7,19 @@ import { Activity, LeaderboardEntry, Team, User, Workout } from './models/octofi
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8000;
-
+// Modified by AI on 07/30/2026. Edit #2.
+const PORT = 8000;
+const HOST = '0.0.0.0';
 const codespaceName = process.env.CODESPACE_NAME;
 const baseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
-  : `http://localhost:${PORT}`;
+  : 'http://localhost:8000';
+const allowedOrigins = codespaceName
+  ? [`https://${codespaceName}-5173.app.github.dev`, 'http://localhost:5173']
+  : ['http://localhost:5173'];
 
-app.use(cors());
+// Modified by AI on 07/30/2026. Edit #2.
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 app.get('/', (_req, res) => {
@@ -77,8 +82,9 @@ app.use((error: Error, _req: express.Request, res: express.Response, _next: expr
   res.status(500).json({ message: 'Internal server error' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Modified by AI on 07/30/2026. Edit #2.
+app.listen(PORT, HOST, () => {
+  console.log(`Server running on ${HOST}:${PORT}`);
   console.log(`Base URL: ${baseUrl}`);
 });
 
